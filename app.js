@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setVH();
     window.addEventListener('resize', setVH);
 
+    // --- Splash Screen Dismissal ---
+    const splash = document.getElementById('splash-screen');
+    setTimeout(() => {
+        splash.classList.add('hidden');
+        setTimeout(() => splash.style.display = 'none', 800);
+    }, 2500);
+
     // --- Google Maps Initialization ---
     // Precise GH Raisoni Jalgaon center
     const campusCenter = { lat: 20.962134, lng: 75.553502 };
@@ -101,8 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+
             // Click interaction
             marker.addListener('click', () => {
+                // Animation effect
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => marker.setAnimation(null), 750);
+
                 window.openPhotoViewer(building.id);
                 expandSheet();
                 if (activeInput === 'source') {
@@ -117,7 +129,99 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            buildingMarkers.push({ id: building.id, category: building.category, marker: marker });
+            buildingMarkers.push({ id: building.id, category: building.category, marker: marker, data: building });
+        });
+    }
+
+    // --- Category Filtering Logic ---
+    const filterChips = document.querySelectorAll('.filter-chip');
+    filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const category = chip.getAttribute('data-category');
+            
+            // UI Update
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+
+            // Filter Markers
+            buildingMarkers.forEach(item => {
+                if (category === 'all' || item.category === category) {
+                    item.marker.setMap(map);
+                } else {
+                    item.marker.setMap(null);
+                }
+            });
+
+            // Filter List
+            renderLocationList(category);
+        });
+    });
+
+    const renderLocationList = (category = 'all') => {
+        const list = document.getElementById('dynamicLocationList');
+        if (!list) return;
+        list.innerHTML = '';
+        
+        campusBuildings.forEach(building => {
+            if (category !== 'all' && building.category !== category) return;
+
+            const li = document.createElement('li');
+            li.className = 'location-item';
+            li.innerHTML = `
+                <div class="icon-box"><span class="material-icons-round">place</span></div>
+                <div class="location-details">
+                    <span class="loc-name">${building.name}</span>
+                    <span class="loc-desc">${building.description}</span>
+                </div>
+            `;
+            li.addEventListener('click', () => {
+                if (activeInput === 'source') {
+                    stopTracking();
+                    sourceInput.value = building.name;
+                    selectedSource = building;
+                    const center = { lat: building.center[0], lng: building.center[1] };
+                    blueDotMarker.setPosition(center);
+                } else {
+                    destInput.value = building.name;
+                    selectedTarget = building;
+                }
+            });
+            list.appendChild(li);
+        });
+    };
+
+    // --- Search Logic ---
+    const mainSearchInput = document.getElementById('mainSearchInput');
+    if (mainSearchInput) {
+        mainSearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            
+            buildingMarkers.forEach(item => {
+                const matches = item.data.name.toLowerCase().includes(query) || 
+                               item.data.description.toLowerCase().includes(query);
+                if (matches) {
+                    item.marker.setMap(map);
+                } else {
+                    item.marker.setMap(null);
+                }
+            });
+
+            // Update list
+            const list = document.getElementById('dynamicLocationList');
+            if (list) {
+                const items = list.querySelectorAll('.location-item');
+                items.forEach(li => {
+                    const name = li.querySelector('.loc-name').innerText.toLowerCase();
+                    const desc = li.querySelector('.loc-desc').innerText.toLowerCase();
+                    if (name.includes(query) || desc.includes(query)) {
+                        li.style.display = 'flex';
+                    } else {
+                        li.style.display = 'none';
+                    }
+                });
+            }
+
+            if (query.length > 0) expandSheet();
         });
     }
 
