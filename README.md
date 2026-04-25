@@ -1,5 +1,7 @@
 # GH Raisoni Campus Navigation
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=github)](https://kriss2012.github.io/ssbt-navigation/)
+
 A premium, high-performance campus navigation system for GH Raisoni Institute of Engineering and Management, Jalgaon. Built with Google Maps JavaScript API and a custom "Liquid Glass" design system.
 
 ## ✨ Features
