@@ -19,8 +19,58 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <span class="material-icons-round">explore</span>
+                <div class="logo-pulse"></div>
+            </div>
+            <h1 class="splash-title">GH Raisoni</h1>
+            <p class="splash-subtitle">Campus Navigation</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="app-container">
-    <!-- Map Area -->
+        <!-- Weather Widget -->
+        <div class="weather-widget" id="weatherWidget">
+            <span class="material-icons-round weather-icon">wb_sunny</span>
+            <div class="weather-info">
+                <span class="temp">38°C</span>
+                <span class="city">Jalgaon</span>
+            </div>
+        </div>
+
+        <!-- Category Quick Filters -->
+        <div class="category-filters">
+            <button class="filter-chip active" data-category="all">
+                <span class="material-icons-round">apps</span> All
+            </button>
+            <button class="filter-chip" data-category="academic">
+                <span class="material-icons-round">school</span> Study
+            </button>
+            <button class="filter-chip" data-category="residential">
+                <span class="material-icons-round">hotel</span> Hostel
+            </button>
+            <button class="filter-chip" data-category="cafeteria">
+                <span class="material-icons-round">restaurant</span> Food
+            </button>
+        </div>
+        <!-- Top Search Bar -->
+        <div class="top-overlay">
+            <div class="search-bar glass-noise">
+                <span class="material-icons-round search-icon">search</span>
+                <input type="text" placeholder="Search buildings, hostels..." id="mainSearchInput">
+                <button class="icon-btn">
+                    <span class="material-icons-round">mic</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Map Area -->
     <div class="map-container">
         <div id="map"></div>
     </div>
@@ -106,7 +156,7 @@
     </button>
 
     <!-- Bottom Sheet for Routing -->
-    <div class="bottom-sheet" id="routingSheet">
+    <div class="bottom-sheet glass-noise" id="routingSheet">
         <div class="drag-handle"></div>
         
         <div class="sheet-header">
