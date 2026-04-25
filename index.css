@@ -11,15 +11,30 @@
     --border-light: rgba(226, 232, 240, 0.8);
 
     /* Layout & Styling */
-    --radius-lg: 24px;
-    --radius-md: 16px;
-    --radius-sm: 12px;
-    --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.07);
-    --shadow-float: 0 15px 35px 0 rgba(0, 0, 0, 0.15);
-    --glass-bg: rgba(255, 255, 255, 0.35);
-    --glass-blur: blur(40px) saturate(210%);
+    --radius-lg: 32px;
+    --radius-md: 20px;
+    --radius-sm: 14px;
+    --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+    --shadow-float: 0 20px 45px 0 rgba(0, 0, 0, 0.18);
+    --glass-bg: rgba(255, 255, 255, 0.28);
+    --glass-blur: blur(24px) saturate(190%);
     --glass-border: 1px solid rgba(255, 255, 255, 0.4);
-    --glass-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    --glass-border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    --noise: url("https://www.transparenttextures.com/patterns/pinstriped-dark.png");
+}
+
+/* Glassmorphism Noise Overlay */
+.glass-noise {
+    position: relative;
+}
+.glass-noise::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--noise);
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: -1;
 }
 
 * {
@@ -44,9 +59,100 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile */
+    height: 100dvh;
     width: 100vw;
     overflow: hidden;
+    background: #000; /* Dark background for splash */
+}
+
+/* Splash Screen */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #0F172A;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+#splash-screen.hidden {
+    transform: translateY(-100%);
+}
+
+.splash-content {
+    text-align: center;
+    color: white;
+}
+
+.splash-logo {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 24px;
+}
+
+.splash-logo .material-icons-round {
+    font-size: 80px;
+    color: var(--primary);
+    position: relative;
+    z-index: 2;
+}
+
+.logo-pulse {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%;
+    background: var(--primary);
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.4;
+    animation: pulseLogo 2s infinite;
+}
+
+@keyframes pulseLogo {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+}
+
+.splash-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+}
+
+.splash-subtitle {
+    font-size: 14px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+}
+
+.loading-bar {
+    width: 140px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.loading-progress {
+    width: 0%;
+    height: 100%;
+    background: var(--primary);
+    animation: progress 2.5s ease-in-out forwards;
+}
+
+@keyframes progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
 }
 
 #app-container {
@@ -105,15 +211,24 @@ body {
 
 /* Google Maps Marker Labels */
 .marker-label {
-    background: rgba(255, 255, 255, 0.85);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 11px !important;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12px !important;
     font-weight: 600 !important;
-    color: #0F172A !important;
-    margin-top: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    color: var(--text-main) !important;
+    margin-top: 32px;
+    border: var(--glass-border);
+    box-shadow: var(--shadow-soft);
     white-space: nowrap;
+    animation: floatMarker 3s ease-in-out infinite;
+}
+
+@keyframes floatMarker {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
 
 /* Instruction Card at the Top */
@@ -209,19 +324,90 @@ body {
     color: var(--text-muted);
 }
 
-/* Top Overlay (Search & Categories) */
-.top-overlay {
+/* Weather Widget */
+.weather-widget {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 24px 20px 20px 20px;
-    z-index: 1000;
+    top: 24px;
+    left: 24px;
+    z-index: 1010;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.weather-widget:hover {
+    transform: scale(1.05);
+}
+
+.weather-icon {
+    color: #FBBF24; /* Sun color */
+    font-size: 28px;
+}
+
+.weather-info {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding-top: max(24px, env(safe-area-inset-top));
-    /* Notch support */
+}
+
+.weather-info .temp {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.weather-info .city {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Category Quick Filters */
+.category-filters {
+    position: absolute;
+    top: 90px;
+    left: 24px;
+    z-index: 1010;
+    display: flex;
+    gap: 8px;
+    padding-bottom: 8px;
+    max-width: calc(100% - 48px);
+    overflow-x: auto;
+}
+
+.filter-chip {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    padding: 8px 16px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
+}
+
+.filter-chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.filter-chip:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 .search-bar {
