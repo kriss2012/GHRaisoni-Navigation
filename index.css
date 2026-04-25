@@ -842,55 +842,44 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 12px;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid transparent;
 }
 
 .location-item:hover {
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(8px);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .location-item:active {
-    background: rgba(255, 255, 255, 0.6);
-    transform: scale(0.98);
+    transform: scale(0.98) translateX(4px);
 }
 
 .icon-box {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    background: rgba(99, 102, 241, 0.15);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary);
-    transition: all 0.3s ease;
+    color: var(--primary-light);
 }
-
-.location-item:hover .icon-box {
-    background: var(--primary);
-    color: white;
-    transform: rotate(-10deg);
-}
-
 
 .location-details {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .loc-name {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--text-main);
 }
 
@@ -901,28 +890,32 @@ body {
 
 /* Primary Button */
 .primary-btn {
-    background: var(--primary);
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: white;
     border: none;
-    border-radius: var(--radius-lg);
-    padding: 18px;
+    border-radius: var(--radius-md);
     font-family: inherit;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    width: 100%;
+    gap: 12px;
     cursor: pointer;
-    box-shadow: var(--shadow-float);
-    transition: transform 0.2s, background 0.2s;
-    margin-top: auto; /* Push to bottom of flex container */
-    flex-shrink: 0; /* Don't collapse */
+    box-shadow: 0 10px 25px var(--primary-glow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: auto;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px var(--primary-glow);
+    filter: brightness(1.1);
 }
 
 .primary-btn:active {
-    transform: scale(0.98);
     background: var(--primary-light);
 }
 
@@ -964,13 +957,13 @@ body {
     position: relative;
     width: 90%;
     max-width: 500px;
-    background: var(--glass-bg);
-    border: var(--glass-border);
-    border-radius: 32px;
+    background: var(--surface-solid);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transform: scale(0.9) translateY(20px);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .photo-overlay.active .photo-container {
@@ -979,13 +972,13 @@ body {
 
 .close-photo {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border: none;
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     color: white;
     display: flex;
@@ -993,31 +986,37 @@ body {
     justify-content: center;
     cursor: pointer;
     z-index: 10;
+    transition: all 0.3s;
+}
+
+.close-photo:hover {
+    background: var(--accent);
+    transform: rotate(90deg);
 }
 
 .photo-container img {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: block;
 }
 
 .photo-caption {
     padding: 24px;
-    color: var(--text-main);
+    background: linear-gradient(to bottom, rgba(30, 41, 59, 0), rgba(30, 41, 59, 1));
 }
 
 .photo-caption h2 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 8px;
-    color: var(--primary);
+    color: white;
 }
 
 .photo-caption p {
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 14px;
     color: var(--text-muted);
+    line-height: 1.6;
 }
 
 /* Campus Timings Button */
