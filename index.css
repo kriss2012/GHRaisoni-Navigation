@@ -237,24 +237,26 @@ body {
 
 /* Google Maps Marker Labels */
 .marker-label {
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    color: var(--text-main) !important;
-    margin-top: 32px;
-    border: var(--glass-border);
-    box-shadow: var(--shadow-soft);
+    border-radius: 8px;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    margin-bottom: 40px; /* Position above the pin */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
-    animation: floatMarker 3s ease-in-out infinite;
+    pointer-events: none;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
 }
 
 @keyframes floatMarker {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+    0%, 100% { transform: translateY(-5px); }
+    50% { transform: translateY(-10px); }
 }
 
 /* Instruction Card at the Top */
@@ -263,33 +265,27 @@ body {
     top: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(-150%);
-    width: 90%;
-    max-width: 360px;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
+    width: auto;
+    min-width: 280px;
+    max-width: 90%;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 100px; /* Capsule shape */
+    padding: 8px 24px 8px 8px;
     display: flex;
     align-items: center;
     gap: 16px;
     z-index: 1100;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
 }
 
-.instruction-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
-    pointer-events: none;
+.instruction-card.visible {
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
 }
 
 /* Google Maps InfoWindow Glass Styling */
