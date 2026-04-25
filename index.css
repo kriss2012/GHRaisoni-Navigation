@@ -288,32 +288,6 @@ body {
     pointer-events: auto;
 }
 
-/* Google Maps InfoWindow Glass Styling */
-.gm-style-iw.gm-style-iw-c {
-    background: var(--glass-bg) !important;
-    backdrop-filter: var(--glass-blur) !important;
-    -webkit-backdrop-filter: var(--glass-blur) !important;
-    border: var(--glass-border) !important;
-    box-shadow: var(--shadow-float) !important;
-    border-radius: 16px !important;
-    padding: 0 !important;
-}
-
-.gm-style-iw-d {
-    overflow: hidden !important;
-    padding: 12px !important;
-}
-
-.gm-style-iw-tc::after {
-    background: var(--glass-bg) !important;
-    backdrop-filter: var(--glass-blur) !important;
-    -webkit-backdrop-filter: var(--glass-blur) !important;
-}
-
-.instruction-card.visible {
-    transform: translateX(-50%) translateY(0);
-}
-
 .instruction-icon {
     width: 44px;
     height: 44px;
