@@ -85,44 +85,45 @@ document.addEventListener('DOMContentLoaded', () => {
         campusBuildings.forEach(building => {
             const position = { lat: building.center[0], lng: building.center[1] };
 
-            // Custom marker with label
+            // Premium Custom Marker
             const marker = new google.maps.Marker({
                 position: position,
                 map: map,
                 title: building.name,
                 icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: '#f33b3b',
+                    path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+                    fillColor: '#6366F1', // Primary Indigo
                     fillOpacity: 0.9,
                     strokeColor: '#FFFFFF',
                     strokeWeight: 2,
-                    scale: 10
+                    scale: 2,
+                    anchor: new google.maps.Point(12, 22),
+                    labelOrigin: new google.maps.Point(12, -10)
                 },
                 label: {
                     text: building.name,
-                    color: '#0F172A',
-                    fontSize: '11px',
-                    fontWeight: '600',
+                    color: '#FFFFFF',
+                    fontSize: '12px',
+                    fontWeight: '700',
                     fontFamily: 'Outfit, sans-serif',
                     className: 'marker-label'
                 }
             });
 
-
-            // Click interaction
+            // Click interaction with smooth scaling
             marker.addListener('click', () => {
-                // Animation effect
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(() => marker.setAnimation(null), 750);
+                // Smooth focus
+                map.panTo(marker.getPosition());
+                map.setZoom(19);
 
                 window.openPhotoViewer(building.id);
                 expandSheet();
+                
                 if (activeInput === 'source') {
                     stopTracking();
                     sourceInput.value = building.name;
                     selectedSource = building;
-                    const pos = { lat: building.center[0], lng: building.center[1] };
-                    blueDotMarker.setPosition(pos);
+                    blueDotMarker.setPosition(marker.getPosition());
                 } else {
                     destInput.value = building.name;
                     selectedTarget = building;
@@ -231,9 +232,14 @@ document.addEventListener('DOMContentLoaded', () => {
         map: map,
         suppressMarkers: true,
         polylineOptions: {
-            strokeColor: '#f33b3b',
-            strokeOpacity: 0.8,
-            strokeWeight: 6
+            strokeColor: '#6366F1', // Primary Indigo
+            strokeOpacity: 0.9,
+            strokeWeight: 8,
+            icons: [{
+                icon: { path: google.maps.SymbolPath.CIRCLE, scale: 4, fillOpacity: 1, fillColor: '#fff' },
+                offset: '0',
+                repeat: '20px'
+            }]
         }
     });
 
