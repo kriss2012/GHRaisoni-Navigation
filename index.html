@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GH Raisoni Campus Navigation</title>
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="app-container">
+    <!-- Map Area -->
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- Instruction Card -->
+    <div class="instruction-card" id="instructionCard">
+        <div class="instruction-icon">
+            <span class="material-icons-round">explore</span>
+        </div>
+        <div class="instruction-text">
+            <span id="navInstruction">Select destination</span>
+            <span id="navMeta">Tap Start Navigation</span>
+        </div>
+    </div>
+    <!-- High-End Mini Compass -->
+    <div class="compass-container" id="compass">
+        <!-- Cardinal Labels -->
+        <span class="cardinal n">N</span>
+        <span class="cardinal e">E</span>
+        <span class="cardinal s">S</span>
+        <span class="cardinal w">W</span>
+
+        <svg class="pl" viewBox="0 0 160 160" width="160px" height="160px" xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0%" stop-color="#000"></stop>
+					<stop offset="100%" stop-color="#fff"></stop>
+				</linearGradient>
+				<mask id="mask1">
+					<rect x="0" y="0" width="160" height="160" fill="url(#grad)"></mask>
+				</mask>
+				<mask id="mask2">
+					<rect x="28" y="28" width="104" height="104" fill="url(#grad)"></mask>
+				</mask>
+			</defs>
+			
+			<g class="pl__ring-rotate" style="transform-origin: 80px 80px;">
+				<circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+			</g>
+			<g mask="url(#mask1)" class="pl__ring-rotate" style="transform-origin: 80px 80px;">
+				<circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+			</g>
+			
+			<g transform="translate(80,80)">
+				<g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round">
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-135) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-90) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-45) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(0) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(45) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(90) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(135) translate(0,40)"></polyline>
+					<polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(180) translate(0,40)"></polyline>
+				</g>
+			</g>
+
+			<g id="compassArrows" style="transform-origin: 80px 80px;">
+                <g transform="translate(64,28)">
+                    <path fill="hsl(3,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
+                    <path fill="hsl(223,10%,90%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z"></path>
+                </g>
+            </g>
+		</svg> 
+    </div>
+    
+    <button class="map-toggle-btn" id="mapToggleBtn" title="Toggle Satellite View">
+        <span class="material-icons-round">satellite_alt</span>
+    </button>
+
+    <!-- GPS / Locate Me Button -->
+    <button class="gps-btn" id="locateMeBtn" title="Find my location">
+        <span class="material-icons-round">my_location</span>
+    </button>
+
+    <!-- Campus Timings Toggle Button -->
+    <button class="timings-btn" id="timingsBtn" title="View Campus Timings">
+        <span class="material-icons-round">schedule</span>
+    </button>
+
+    <!-- Floating Action Button for Navigation -->
+    <button class="fab pulse-glow" id="openNavFab">
+        <span class="material-icons-round">directions</span>
+    </button>
+
+    <!-- Bottom Sheet for Routing -->
+    <div class="bottom-sheet" id="routingSheet">
+        <div class="drag-handle"></div>
+        
+        <div class="sheet-header">
+            <h3>Directions</h3>
+            <button class="icon-btn close-btn" id="closeSheetBtn">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <div class="routing-inputs">
+            <div class="timeline-visual">
+                <div class="timeline-dot start"></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-dot end"></div>
+            </div>
+            <div class="input-fields">
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Starting point..." class="source-input" id="sourceInput">
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Choose destination..." class="dest-input" id="destInput">
+                </div>
+            </div>
+            <button class="icon-btn swap-btn">
+                <span class="material-icons-round">swap_vert</span>
+            </button>
+        </div>
+
+        <!-- Recent Locations / Suggested -->
+        <!-- Recent Locations / Suggested -->
+        <div class="suggested-section">
+            <h4>Campus Locations</h4>
+            <ul class="location-list" id="dynamicLocationList">
+                <!-- Dynamically populated from locations.js -->
+            </ul>
+        </div>
+
+        <button class="primary-btn pulse-glow" id="startNavBtn">
+            <span class="material-icons-round">navigation</span> Start Navigation
+        </button>
+    </div>
+
+    </div>
+
+    <!-- Photo Overlay Modal -->
+    <div class="photo-overlay" id="photoOverlay">
+        <div class="photo-container">
+            <button class="close-photo" id="closePhotoBtn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <img src="" alt="Location Photo" id="targetPhoto">
+            <div class="photo-caption">
+                <h2 id="photoTitle">Location Name</h2>
+                <p id="photoDesc">Description goes here...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campus Timings Panel -->
+    <div class="timings-panel" id="timingsPanel">
+        <div class="timings-header">
+            <h3>Campus Timings</h3>
+            <button class="close-timings" id="closeTimingsBtn">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+        <div class="timings-list" id="timingsList">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+    
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEGy9PX9GU3rETELxUjheTSW_97fsZGfM&libraries=geometry,places,marker"></script>
+    
+    <!-- External JS -->
+    <script src="locations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
